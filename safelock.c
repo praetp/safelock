@@ -388,8 +388,8 @@ static char *safelock_create_unique(const char *lock_prefix, mode_t mode)
     }
 
     if ((err = pthread_mutexattr_init(&attr)) ||
-        (err = pthread_mutexattr_setpshared(&attr, 1)) ||
-        (err = pthread_mutexattr_setrobust(&attr, 1)) ||
+        (err = pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_SHARED)) ||
+        (err = pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST)) ||
         (err = pthread_mutexattr_settype(&attr,
                                          PTHREAD_MUTEX_ERRORCHECK)) ||
         (err = pthread_mutex_init(&shared->open_mutex, &attr)) ||
