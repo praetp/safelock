@@ -33,8 +33,8 @@ void status(int argc, char **argv)
         printf("%s: locked = %s, crashed = %s", argv[i],
                boolstr(status.locked), boolstr(status.crashed));
         if (status.data_valid)
-            printf(", PID = %d, age = %ld, data = %d",
-                   status.pid, status.age, status.data);
+            printf(", PID = %ld, age = %ld, data = %d",
+                   (long)status.pid, (long)status.age, status.data);
         printf("\n");
     }
 }
@@ -46,13 +46,13 @@ void msg(const char *str)
     if (!pid)
         pid = getpid();
 
-    printf("%d: %s..\n", pid, str);
+    printf("%ld: %s..\n", (long)pid, str);
 }
 
 void die_if(int err, const char *msg)
 {
     if (err)
-        safelock_die(err, "%d: %s", getpid(), msg);
+        safelock_die(err, "%ld: %s", (long)getpid(), msg);
 }
 
 /* usage: safelock-example [LOCKFILE..] */
