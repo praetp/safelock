@@ -33,8 +33,8 @@ void status(int argc, char **argv)
         printf("%s: locked = %s, crashed = %s", argv[i],
                boolstr(status.locked), boolstr(status.crashed));
         if (status.data_valid)
-            printf(", PID = %ld, age = %ld, data = %d",
-                   (long)status.pid, (long)status.age, status.data);
+            printf(", PID = %ld, age = %lu, data = %d",
+                   (long)status.pid, (unsigned long)status.age, status.data);
         printf("\n");
     }
 }
