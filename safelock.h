@@ -4,7 +4,7 @@
 
 /** \mainpage Safelock
  *
- * Safelock is a file-based locking primitive which provides mutual
+ * Safelock is a file-based locking primitive which can provide mutual
  * exclusion between unrelated processes and threads.
  *
  * Safelock offers advantages over POSIX and BSD file locks such as:
@@ -13,25 +13,26 @@
  * - Detection of crashed lock holders
  * - Detailed lock status (PID, lock age, custom data)
  *
+ * Safelock requires POSIX.1-2008 robust mutexes. Tested under
+ * Linux 2.6.32 and Solaris 11.
+ *
  * \par Note:
- * Safelock requires POSIX.1-2008 robust mutexes to automatically
- * cleanup after a lock holder crashes. However, a Safelock may need to
- * be recreated after an unexpected kernel crash or power failure.
- * Applications can detect and handle this situation when the
- * ENOTRECOVERABLE error is returned by a Safelock function. This issue
- * can be avoided by placing Safelocks on a tmpfs filesystem, or
- * removing them on boot.
+ * A Safelock may need to be recreated after an unexpected kernel crash
+ * or power failure. Applications can detect and handle this situation
+ * when the ENOTRECOVERABLE error is returned by a Safelock function.
+ * This issue can be avoided by placing Safelocks on a tmpfs filesystem,
+ * or removing them on boot.
  *
  * \par Example:
  * \code
  * #include "safelock.h"
  * ...
  * safelock_t lock;
- * safelock_open(&lock, "lock.dat", 0660);
- * safelock_lock(lock, SAFELOCK_LOCK_WAIT, 42);
+ * err = safelock_open(&lock, "lock.dat", 0660);
+ * err = safelock_lock(lock, SAFELOCK_LOCK_WAIT, 42);
  * ...
- * safelock_unlock(lock);
- * safelock_close(&lock);
+ * err = safelock_unlock(lock);
+ * err = safelock_close(&lock);
  * \endcode
  *
  * \author Mark Pulford <mark@kyne.com.au>

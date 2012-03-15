@@ -11,6 +11,9 @@ Safelock offers advantages over POSIX and BSD file locks such as:
 - Detection of crashed lock holders
 - Detailed lock status (PID, lock age, custom data)
 
+Safelock requires POSIX.1-2008 robust mutexes. Tested under Linux 2.6.32
+and Solaris 11.
+
 Review `safelock.h` or http://mpx.github.com/safelock/ for detailed
 documentation.
 
@@ -25,9 +28,9 @@ Example
 #include "safelock.h"
 ...
 safelock_t lock;
-safelock_open(&lock, "lock.dat", 0660);
-safelock_lock(lock, SAFELOCK_LOCK_WAIT, 42);
+err = safelock_open(&lock, "lock.dat", 0660);
+err = safelock_lock(lock, SAFELOCK_LOCK_WAIT, 42);
 ...
-safelock_unlock(lock);
-safelock_close(&lock);
+err = safelock_unlock(lock);
+err = safelock_close(&lock);
 ```
