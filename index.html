@@ -72,22 +72,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Safelock </div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p>Safelock is a file-based locking primitive which provides mutual exclusion between unrelated processes and threads. Safelock offers advantages over POSIX and BSD file locks such as:</p>
+<div class="textblock"><p>Safelock is a file-based locking primitive which can provide mutual exclusion between unrelated processes and threads. Safelock offers advantages over POSIX and BSD file locks such as:</p>
 <ul>
 <li>Compatible with multi-threaded applications</li>
 <li>Support for lock attempt timeouts</li>
 <li>Detection of crashed lock holders</li>
 <li>Detailed lock status (PID, lock age, custom data)</li>
 </ul>
-<dl class="user"><dt><b>Note:</b></dt><dd>Safelock requires POSIX.1-2008 robust mutexes to automatically cleanup after a lock holder crashes. However, a Safelock may need to be recreated after an unexpected kernel crash or power failure. Applications can detect and handle this situation when the ENOTRECOVERABLE error is returned by a Safelock function. This issue can be avoided by placing Safelocks on a tmpfs filesystem, or removing them on boot.</dd></dl>
+<p>Safelock requires POSIX.1-2008 robust mutexes. Tested under Linux 2.6.32 and Solaris 11.</p>
+<dl class="user"><dt><b>Note:</b></dt><dd>A Safelock may need to be recreated after an unexpected kernel crash or power failure. Applications can detect and handle this situation when the ENOTRECOVERABLE error is returned by a Safelock function. This issue can be avoided by placing Safelocks on a tmpfs filesystem, or removing them on boot.</dd></dl>
 <dl class="user"><dt><b>Example:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="preprocessor"> #include &quot;<a class="code" href="safelock_8h.html">safelock.h</a>&quot;</span>
  ...
  <a class="code" href="safelock_8h.html#ab8f303600f31a2ba2c222401da03a76e" title="Safelock type.">safelock_t</a> lock;
- <a class="code" href="safelock_8h.html#a82d9918b4f9c50511c307f1484e7ac6e" title="Open a Safelock.">safelock_open</a>(&amp;lock, <span class="stringliteral">&quot;lock.dat&quot;</span>, 0660);
- <a class="code" href="safelock_8h.html#af44c143d7b0f40cc4712e43d3cf565ef" title="Lock a Safelock.">safelock_lock</a>(lock, <a class="code" href="safelock_8h.html#a4e12b9d7a4328fde3d08f970f05c2daca68988a19d318e0965b2a83ae29c76738" title="Wait until locked.">SAFELOCK_LOCK_WAIT</a>, 42);
+ err = <a class="code" href="safelock_8h.html#a82d9918b4f9c50511c307f1484e7ac6e" title="Open a Safelock.">safelock_open</a>(&amp;lock, <span class="stringliteral">&quot;lock.dat&quot;</span>, 0660);
+ err = <a class="code" href="safelock_8h.html#af44c143d7b0f40cc4712e43d3cf565ef" title="Lock a Safelock.">safelock_lock</a>(lock, <a class="code" href="safelock_8h.html#a4e12b9d7a4328fde3d08f970f05c2daca68988a19d318e0965b2a83ae29c76738" title="Wait until locked.">SAFELOCK_LOCK_WAIT</a>, 42);
  ...
- <a class="code" href="safelock_8h.html#a28b7e44452b8a047acf97546e48a88a3" title="Unlock a Safelock.">safelock_unlock</a>(lock);
- <a class="code" href="safelock_8h.html#afb6524a1ea7c6aca2e5f8389508e6baf" title="Close a Safelock.">safelock_close</a>(&amp;lock);
+ err = <a class="code" href="safelock_8h.html#a28b7e44452b8a047acf97546e48a88a3" title="Unlock a Safelock.">safelock_unlock</a>(lock);
+ err = <a class="code" href="safelock_8h.html#afb6524a1ea7c6aca2e5f8389508e6baf" title="Close a Safelock.">safelock_close</a>(&amp;lock);
 </pre></div></dd></dl>
 <dl class="author"><dt><b>Author:</b></dt><dd>Mark Pulford &lt;<a href="mailto:mark@kyne.com.au">mark@kyne.com.au</a>&gt; </dd></dl>
 <dl class="user"><dt><b>Source:</b></dt><dd><a href="https://github.com/mpx/safelock/">https://github.com/mpx/safelock/</a> </dd></dl>
@@ -111,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 1 2012 00:05:35 for Safelock by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 15 2012 23:38:15 for Safelock by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5
 </small></address>
