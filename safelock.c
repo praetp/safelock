@@ -211,12 +211,16 @@ static int mutex_lock(pthread_mutex_t *lock, uint64_t deadline,
     if (dirty)
         *dirty = 0;
     if (err == EOWNERDEAD) {
+#ifdef __USE_XOPEN2K8
         /* pthread_mutex_consistent should only fail when
          * the lock isn't robust, or the state is already
          * consistent - either indicates a bug */
         NOFAIL(pthread_mutex_consistent(lock));
         if (dirty)
             *dirty = 1;
+#else
+        return ENOTRECOVERABLE;
+#endif
     } else if (err == EINVAL) {
         /* If a mutex has been corrupted the safelock will need
          * to be removed in a race free manner (Eg, manually) */
@@ -389,7 +393,9 @@ static char *safelock_create_unique(const char *lock_prefix, mode_t mode)
 
     if ((err = pthread_mutexattr_init(&attr)) ||
         (err = pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_SHARED)) ||
+#ifdef __USE_XOPEN2K
         (err = pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST)) ||
+#endif
         (err = pthread_mutexattr_settype(&attr,
                                          PTHREAD_MUTEX_ERRORCHECK)) ||
         (err = pthread_mutex_init(&shared->open_mutex, &attr)) ||
