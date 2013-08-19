@@ -847,7 +847,8 @@ int safelock_remove(safelock_t lock)
 int safelock_fetch_status(safelock_t lock, safelock_status_t *status)
 {
     lock_data_t *shared;
-    int pid_alive, lock_in_use, err;
+    int pid_alive, err;
+    int lock_in_use = 0;
     int data_mutex_dirty;
 
     assert(lock);
